@@ -39,6 +39,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void toAboutActivity(View view){
+        Intent intent = new Intent(getApplicationContext(),AboutActivity.class);
+        startActivity(intent);
+    }
+    public void toHomeActivity(View view){
+        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+        startActivity(intent);
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

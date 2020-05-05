@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,9 +8,42 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/otpInfo"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:id="@+id/donationKey"
-        />
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/bubblegum_sans"
+        android:textColor="#8BC34A"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/getOtp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="45dp"
+        android:layout_marginStart="66dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/button"
+        android:fontFamily="@font/bubblegum_sans"
+        android:onClick="getOTP"
+        android:text="Get OTP"
+        android:textColor="#F6F2F2"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otpInfo" />
+
+    <ImageView
+        android:id="@+id/TYimage"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getOtp"
+        app:srcCompat="@drawable/image_8" />
+</androidx.constraintlayout.widget.ConstraintLayout>

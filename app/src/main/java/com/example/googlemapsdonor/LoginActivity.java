@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this,"Welcome "+user.getUserName(),Toast.LENGTH_LONG).show();
                 //intent to rediret to new activity based on role
                 if (user.getRole().equals(Constants.DONOR)){
-                    Intent intent = new Intent(getApplicationContext(),DonorActivity.class);
+                    Intent intent = new Intent(getApplicationContext(),DonorProfile.class);
                     startActivity(intent);
                 }
                 else if (user.getRole().equals(Constants.NGO)){
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Welcome " + user.getUserName(), Toast.LENGTH_LONG).show();
                     //intent to rediret to new activity based on role
                     if (user.getRole().equals(Constants.DONOR)) {
-                        Intent intent = new Intent(getApplicationContext(), DonorActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), DonorProfile.class);
                         startActivity(intent);
                     } else if (user.getRole().equals(Constants.NGO)) {
                         Intent intent = new Intent(getApplicationContext(), NgoActivity.class);

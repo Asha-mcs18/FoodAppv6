@@ -27,6 +27,8 @@ public class DonationsStatus extends AppCompatActivity {
     public static final int REQUEST_CODE_GETMESSAGE = 1014;
     private NotificationManagerCompat notificationManager;
     private TextView donationText;
+    String otpString ;
+    TextView otpInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,8 @@ public class DonationsStatus extends AppCompatActivity {
         Log.i("Donation Status","status");
         notificationManager = NotificationManagerCompat.from(this);
         DonationStatusController statusController = new DonationStatusController();
-        donationText= findViewById(R.id.donationKey);
-        donationText.setText("Donation Status Page ");
+//        donationText= findViewById(R.id.donationKey);
+//        donationText.setText("Donation Status Page ");
 //        statusController.donorStatus(new DataStatus() {
 //            @Override
 //            public void dataLoaded(String status) {
@@ -52,11 +54,14 @@ public class DonationsStatus extends AppCompatActivity {
 //
 //            }
 //        });
+        otpString = "Got OTP? If not click on button below and Give this OTP to volunteer guy to confirm physically.";
+        otpInformation = findViewById(R.id.otpInfo);
+        otpInformation.setText(otpString);
     }
 
-    public void sendNotification() {
-        String title = "Your Donation Accepted";
-        String message = "Your donation is accepted by NGO";
+    public void getOTP(View view) {
+        String title = "Give this OTP to NGO";
+        String message = "Your OTP is 1234";
         Log.i("onsend","onsend");
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
@@ -68,11 +73,12 @@ public class DonationsStatus extends AppCompatActivity {
                 .build();
 
         notificationManager.notify(1, notification);
-        Intent intent = new Intent(getApplicationContext(),NgoActivity.class);
-        startActivity(intent);
-        DonationModel donationModel = (DonationModel) getIntent().getSerializableExtra("DonationModel");
-        donationText = findViewById(R.id.donationKey);
-        donationText.setText(donationModel.getKey());
-        Log.d("Donor Status Activity",donationModel.toString());
+//        Intent intent = new Intent(getApplicationContext(),NgoActivity.class);
+//        startActivity(intent);
+//        DonationModel donationModel = (DonationModel) getIntent().getSerializableExtra("DonationModel");
+//        donationText = findViewById(R.id.donationKey);
+//        donationText.setText(donationModel.getKey());
+//        Log.d("Donor Status Activity",donationModel.toString());
     }
+
 }
