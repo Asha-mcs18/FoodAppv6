@@ -26,21 +26,15 @@ public class DonorActivity extends AppCompatActivity {
     String latitude;
     String longitude;
     TimePicker picker;
-<<<<<<< HEAD
-=======
+
     int minutes=0;
     int hours=0;
     private DonationController donationController = new DonationController();
 
->>>>>>> 99f4e58c6928f12e0432b4d1dc5b3514fc8d939d
     public void toMapActivity(View view){
         Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
 //     startActivity(intent);
         startActivityForResult(intent , REQUEST_CODE_GETMESSAGE);
-<<<<<<< HEAD
-
-=======
->>>>>>> 99f4e58c6928f12e0432b4d1dc5b3514fc8d939d
     }
     public void toSearchAddress(View view){
         Intent intent = new Intent(getApplicationContext(),SearchAddressMap.class);
@@ -68,16 +62,6 @@ public class DonorActivity extends AppCompatActivity {
         final EditText shelfLife =  (EditText) findViewById(R.id.shelfLifeField);
         final EditText noOfPersons = (EditText) findViewById(R.id.NoOfPersonsField);
         picker=(TimePicker)findViewById(R.id.timePicker1);
-<<<<<<< HEAD
-        final String hours = Integer.toString(picker.getHour());
-        final String minutes = Integer.toString(picker.getMinute());
-//     Log.i("ALL FOOD DETAILS","ENTERED BY DONOR");
-//     Log.i("FOOD ITEM", foodItem.getText().toString());
-//     Log.i("SHELF LIFE", shelfLife.getText().toString());
-//     Log.i("NO OF PERSONS",noOfPersons.getText().toString());
-//     Log.i("LATITUDE ", latitude);
-//     Log.i("LONGITUDE ", longitude);
-=======
         hours = picker.getHour();
         minutes = picker.getMinute();
         //final String hours = Integer.toString(picker.getHour());
@@ -88,7 +72,6 @@ public class DonorActivity extends AppCompatActivity {
         Log.i("NO OF PERSONS",noOfPersons.getText().toString());
         Log.i("LATITUDE ", latitude);
         Log.i("LONGITUDE ", longitude);
->>>>>>> 99f4e58c6928f12e0432b4d1dc5b3514fc8d939d
 
 //     startActivityForResult(intent , REQUEST_CODE_GETMESSAGE);
 
@@ -133,10 +116,6 @@ public class DonorActivity extends AppCompatActivity {
         });
     }
 
-<<<<<<< HEAD
-
-    @Override
-=======
     private boolean validateInput(String mfoodItem, int mshelfLife, int mNoOfPersons, Double mlatitude, Double mlongitude, int hours, int minutes) {
         if(mfoodItem!="" && mshelfLife>3&&mNoOfPersons>10&&mlatitude!=0&&mlongitude!=0&&hours>0&&hours<23&&minutes>0){
             return true;
@@ -144,7 +123,6 @@ public class DonorActivity extends AppCompatActivity {
         return false;
     }
 
->>>>>>> 99f4e58c6928f12e0432b4d1dc5b3514fc8d939d
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donor);

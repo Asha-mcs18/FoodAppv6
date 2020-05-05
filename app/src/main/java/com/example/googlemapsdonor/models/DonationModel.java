@@ -1,6 +1,15 @@
 package com.example.googlemapsdonor.models;
 
 import java.io.Serializable;
+import java.security.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import android.os.Parcelable;
+
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.ServerValue;
 
 public class DonationModel implements Serializable {
     private String key;
@@ -11,11 +20,25 @@ public class DonationModel implements Serializable {
     private String donorLocationKey;
     private String foodKey;
     private String status;
+    //private HashMap<String,Object> timestampCreated;
+    private Object timestampCreated;
 
     public DonationModel(String donorKey, String pickUpLocationKey, String foodKey) {
         this.donorKey = donorKey;
         this.pickUpLocationKey = pickUpLocationKey;
         this.foodKey = foodKey;
+//        HashMap<String,Object> timestamp = new HashMap<>();
+//        timestamp.put("timestamp", ServerValue.TIMESTAMP);
+//        this.timestampCreated  = timestamp;
+      //  this.timestampCreated = ServerValue.TIMESTAMP;
+    }
+//
+    public Object getTimestampCreated() {
+        return timestampCreated;
+    }
+
+    public void setTimestampCreated(Object timestampCreated) {
+        this.timestampCreated = timestampCreated;
     }
 
     public DonationModel() {
@@ -84,6 +107,19 @@ public class DonationModel implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+//
+//    public HashMap<String, Object> getTimestampCreated() {
+//        return timestampCreated;
+//    }
+//
+//    public void setTimestampCreated(HashMap<String, Object> timestampCreated) {
+//        this.timestampCreated = timestampCreated;
+//    }
+//
+//    @Exclude
+//    public long getTimeStampCreatedLong(){
+//        return (long) timestampCreated.get("timestamp");
+//    }
 
     @Override
     public String toString() {

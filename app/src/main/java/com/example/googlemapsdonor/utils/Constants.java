@@ -16,4 +16,5 @@ public class Constants {
     public static final String USER = "Users";
     public static final String ROLE = "Role";
     public static final String USER_NAME= "userName";
+    public static final String DONOR_KEY = "donorKey";
 }

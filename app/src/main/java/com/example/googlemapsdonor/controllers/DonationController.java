@@ -12,6 +12,7 @@ import com.example.googlemapsdonor.models.FoodModel;
 import com.example.googlemapsdonor.models.LocationModel;
 import com.example.googlemapsdonor.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class DonationController {
     private FBDonationHandler donationHandler;
@@ -30,7 +31,11 @@ public class DonationController {
     }
 
     public void createNewDonation(FoodModel food, final LocationModel pickUpLocation, final DataStatus appDataStatus){
-        mdonorKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mdonorKey=null;
+        FirebaseUser currentUser= FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser!=null) {
+            mdonorKey = currentUser.getUid();
+        }
         Log.d("Donation Controller 1","Donor key,Food Ky, location key "+mdonorKey+" "+ mfoodKey +" " + mlocationKey);
         if(mdonorKey!=null) {
             foodHandler.addFood(food, new DataStatus() {
@@ -91,6 +96,7 @@ public class DonationController {
         else{
             String errorMessage= "Please login to donate!!";
             Log.d("Donation Controller",errorMessage);
+            appDataStatus.errorOccured(errorMessage);
         }
     }
 }

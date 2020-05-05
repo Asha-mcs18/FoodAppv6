@@ -35,7 +35,6 @@ public class DonationDetails extends AppCompatActivity {
     private static  final String CHANNEL_DESC= "Donation accepted notifocation";
     private NotificationManagerCompat notificationManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +54,6 @@ public class DonationDetails extends AppCompatActivity {
         TextView donorCon = (TextView) findViewById(R.id.donorContactField);
         donorCon.setText(donorContact);
 
-<<<<<<< HEAD
-=======
         btnAccept = findViewById(R.id.acceptBtn);
 
         btnAccept.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +66,7 @@ public class DonationDetails extends AppCompatActivity {
                         .setContentTitle("New Notification")
                         .setContentText(message)
                         .setAutoCancel(true);
-                Intent intent = new Intent(getApplicationContext(),NgoNotify.class);
+                Intent intent = new Intent(getApplicationContext(),NgoActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("message",message);
                 PendingIntent pendingIntent = PendingIntent.getActivity(DonationDetails.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -80,8 +77,6 @@ public class DonationDetails extends AppCompatActivity {
                 notificationManagerCompat.notify(0,builder.build());
             }
         });
->>>>>>> 99f4e58c6928f12e0432b4d1dc5b3514fc8d939d
-
 
         notificationManager = NotificationManagerCompat.from(this);
 
@@ -113,5 +108,4 @@ public class DonationDetails extends AppCompatActivity {
         finish();
 
     }
-
 }

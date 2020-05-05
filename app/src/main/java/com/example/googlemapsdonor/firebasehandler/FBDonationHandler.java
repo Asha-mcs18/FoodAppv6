@@ -14,9 +14,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +29,9 @@ public class FBDonationHandler {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference donationRef;
     private List<DonationModel> donations;
+    Calendar startDate = new GregorianCalendar();
+    Calendar endDate = new GregorianCalendar();
+    int flag=0;
 
     //DonationModel donationModel;
 
@@ -32,6 +39,16 @@ public class FBDonationHandler {
         firebaseDatabase = FirebaseDatabase.getInstance();
         donationRef = firebaseDatabase.getReference(Constants.DONATION);
         donations  = new ArrayList<DonationModel>();
+        //start date
+        startDate.set(Calendar.HOUR_OF_DAY,0);
+        startDate.set(Calendar.MINUTE,0);
+        startDate.set(Calendar.SECOND,0);
+        startDate.set(Calendar.MILLISECOND,0);
+        //for end date
+        endDate.set(Calendar.HOUR_OF_DAY,11);
+        endDate.set(Calendar.MINUTE,59);
+        endDate.set(Calendar.SECOND,59);
+        endDate.set(Calendar.MILLISECOND,999);
     }
 
     //done
@@ -70,28 +87,59 @@ public class FBDonationHandler {
 
     //done
     public void newDonation(final DonationModel donationModel, final DataStatus dataStatus){
-        String donorKey = donationModel.getDonorKey();
+        final String donorKey = donationModel.getDonorKey();
         String pickUpLocationKey = donationModel.getPickUpLocationKey();
         String foodKey= donationModel.getFoodKey();
         if(donorKey!=null&&pickUpLocationKey!=null&&foodKey!=null){
-            String key = donationRef.push().getKey();
+            final String key = donationRef.push().getKey();
             donationModel.setKey(key);
             donationModel.setStatus(Constants.NOT_ACCEPTED_YET);
-            donationRef.child(key).setValue(donationModel)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d("New Donation","New donation added at key"+donationModel.getKey());
-                            dataStatus.dataCreated(donationModel);
+            donationModel.setTimestampCreated(ServerValue.TIMESTAMP);
+            //if this is the first donation made by donor
+            Log.d("DBDonHand new","new  start time :"+startDate.getTimeInMillis());
+            Log.d("DBDonHand new","new end time :"+endDate.getTimeInMillis());
+            donationRef.orderByChild(Constants.DONOR_KEY).equalTo(donorKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    flag=0;
+                    Log.d("New Donation","new data snapshot is"+dataSnapshot.toString());
+                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+                        DonationModel dm= ds.getValue(DonationModel.class);
+                        if(dm!=null
+                                &&  Long.parseLong(dm.getTimestampCreated().toString())>startDate.getTimeInMillis()){
+                            Log.d("New Donation","new inside if condition hence donation already exist");
+                            flag=1;
                         }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("New Donation","New donation Failure"+e.getMessage());
-                            dataStatus.errorOccured("New donation Failure"+e.getMessage());
-                        }
-                    });
+                    }
+                    if(flag==0){
+                        donationRef.child(key).setValue(donationModel)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("New Donation","New donation added at key"+donationModel.getKey());
+                                        //donationRef.updateChildren()
+                                        dataStatus.dataCreated(donationModel);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("New Donation","New donation Failure"+e.getMessage());
+                                        dataStatus.errorOccured("New donation Failure"+e.getMessage());
+                                    }
+                                });
+                    }
+                    else{
+                        Log.d("New Donation","new Cannot add more than one donation per day for key "+ donorKey);
+                        dataStatus.errorOccured("new Cannot add more than one donation per day");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
@@ -117,6 +165,7 @@ public class FBDonationHandler {
         });
 
     }
+
     //done
     public void changeStatusToComplete(final String donationKey){
         donationRef.child(donationKey).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -176,6 +225,40 @@ public class FBDonationHandler {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    //done
+    public void readDonationStatus(final String donorKey, final DataStatus dataStatus){
+//        endDate = startDate;
+//        endDate.add(Calendar.DAY_OF_MONTH,1);
+        Log.d("Donation Hleper", "start date is " + startDate.getTimeInMillis());
+        Log.d("Donation Hleper", "end date is " + endDate.getTimeInMillis());
+        donationRef.orderByChild("timestampCreated").startAt(startDate.getTimeInMillis()).endAt(endDate.getTimeInMillis()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DonationModel donationModel=null;
+                Log.d("Donation Hleper","Data Snapshot is "+dataSnapshot.toString());
+                for(DataSnapshot ds:dataSnapshot.getChildren()){
+                    if((ds.getValue(DonationModel.class)).getDonorKey().equals(donorKey)) {
+                        donationModel = ds.getValue(DonationModel.class);
+                    }
+                }
+                if(donationModel!=null){
+                    Log.d("Donation Hleper", "Data Snapshot is " + donationModel.toString());
+                    dataStatus.dataLoaded(donationModel.getStatus());
+                }
+                else{
+                    Log.d("Donation Hleper", "Data Snapshot is " + donationModel);
+                    dataStatus.dataLoaded("");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Donation Hleper","Data Snapshot is "+databaseError.getMessage());
+                dataStatus.errorOccured(databaseError.getMessage());
             }
         });
     }

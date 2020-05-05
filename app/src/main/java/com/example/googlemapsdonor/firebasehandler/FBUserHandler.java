@@ -192,4 +192,22 @@ public class FBUserHandler {
             }
         });
     }
+
+//    public void isRoleMatching(String key,String role){
+//        DatabaseReference fullPath = userRef.child(role);
+//        fullPath.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                if(dataSnapshot!=null){
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 }

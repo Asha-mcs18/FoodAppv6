@@ -12,7 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.example.googlemapsdonor.controllers.DonationStatusController;
+import com.example.googlemapsdonor.models.DataStatus;
+
 public class MainActivity extends AppCompatActivity {
+    //test
+    private DonationStatusController donationStatusController= new DonationStatusController();
+    //test
+
     public void toDonorActivity(View view){
         Intent intent = new Intent(getApplicationContext(),DonorActivity.class);
      startActivity(intent);
@@ -37,6 +44,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+//        donationStatusController.donorStatus(new DataStatus() {
+//            @Override
+//            public void dataLoaded(String status) {
+//                super.dataLoaded(status);
+//                Log.d("Donor status","status is "+status);
+//            }
+//
+//            @Override
+//            public void errorOccured(String message) {
+//
+//            }
+//        });
     }
 }

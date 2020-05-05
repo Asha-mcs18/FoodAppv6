@@ -28,13 +28,6 @@ public class NgoActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ngo);
-        //test
         donationListController.getDonationList(new DataStatus() {
 //            @Override
 //            public void dataLoaded(List<Object> object) {
@@ -42,15 +35,15 @@ public class NgoActivity extends AppCompatActivity {
 //                Log.d("Ngo Activity","Donation List Loaded successfully");
 //                //mdonationList = (List<DonationListModel>)(List<?>)object;
 //            }
-
             @Override
             public void dataLoaded(List<?> donations) {
                 super.dataLoaded(donations);
                 Log.d("NGO ACTIVITY", "Donation List Item after food added");
                 List<DonationListModel> donationList = (List<DonationListModel>)(List<?>) donations;
-                for(DonationListModel d: donationList){
-                    Log.d("NGO ACTIVITY", "donation List item added  is" +d.toString());
-                }
+                mdonationList = donationList;
+//                for(DonationListModel d: donationList){
+//                    Log.d("NGO ACTIVITY", "donation List item added  is" +d.toString());
+//                }
             }
 
             @Override
@@ -66,10 +59,18 @@ public class NgoActivity extends AppCompatActivity {
                 Toast.makeText(NgoActivity.this,message,Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ngo);
+        //test
         //test
         ListView donationList = (ListView) findViewById(R.id.donationsList);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,donations);
         donationList.setAdapter(adapter);
+        Log.d("NGO ACTIVITY", "Donation List Items are : ");
         if(mdonationList!=null){
             for (DonationListModel donation:mdonationList){
                 Log.d("Ngo Activity",donation.toString());
