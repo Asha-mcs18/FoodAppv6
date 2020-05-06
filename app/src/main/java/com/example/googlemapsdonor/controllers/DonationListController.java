@@ -31,39 +31,39 @@ public class DonationListController {
     public void getDonationList(final DataStatus appDataStatus){
         donationHandler.readDonations(new DataStatus() {
 //            @Override
-//            public void dataLoaded(List<Object> objects) {
+//            public void dataLoaded(List<?> objects) {
 //                super.dataLoaded(objects);
 //                Log.d("DonationListController","Inside Donation List Controller"+objects.size());
-//                //donationList = (List<DonationListModel>) (List<?>) objects;
-//                //donationList = (List<?extends DonationListModel>) object;
+//                donationList = (List<DonationListModel>) (List<?>) objects;
+//                donationList = (List<?extends DonationListModel>) object;
 //
-////                for(final DonationListModel donation: donationList) {
-////                    foodKey  =donation.getFoodKey();
-////                    Log.d("DonationListController","food key is"+foodKey);
-////                     foodHandler.getFoodItem(foodKey, new DataStatus() {
-////                         @Override
-////                         public void dataLoaded(Object object) {
-////                             Log.d("DonationListController","Got food model for food");
-////                             super.dataLoaded(object);
-////                             FoodModel foodModel = (FoodModel) object;
-////                             Log.d("DonationListController","the food read is "+foodModel.toString());
-////                             donation.setFoodItem(foodModel.getFoodItem());
-////                             donation.setNoOfPersons(foodModel.getNoOfPersons());
-////                         }
-////
-////                         @Override
-////                         public void errorOccured(String message) {
-////                             Log.d("DonationListController",message);
-////                             appDataStatus.errorOccured(message);
-////                         }
-////                     });
-////                }
-////                Log.d("DonationListCOntroller","Donation List printed");
-////                for(Object o:objects){
-////                    DonationListModel donationListModel = (DonationListModel) o;
-////                    Log.d("DonationListController", donationListModel.toString());
-////                }
-////                appDataStatus.dataLoaded(objects);
+//                for(final DonationListModel donation: donationList) {
+//                    foodKey  =donation.getFoodKey();
+//                    Log.d("DonationListController","food key is"+foodKey);
+//                     foodHandler.getFoodItem(foodKey, new DataStatus() {
+//                         @Override
+//                         public void dataLoaded(Object object) {
+//                             Log.d("DonationListController","Got food model for food");
+//                             super.dataLoaded(object);
+//                             FoodModel foodModel = (FoodModel) object;
+//                             Log.d("DonationListController","the food read is "+foodModel.toString());
+//                             donation.setFoodItem(foodModel.getFoodItem());
+//                             donation.setNoOfPersons(foodModel.getNoOfPersons());
+//                         }
+//
+//                         @Override
+//                         public void errorOccured(String message) {
+//                             Log.d("DonationListController",message);
+//                             appDataStatus.errorOccured(message);
+//                         }
+//                     });
+//                }
+//                Log.d("DonationListCOntroller","Donation List printed");
+//                for(Object o:objects){
+//                    DonationListModel donationListModel = (DonationListModel) o;
+//                    Log.d("DonationListController", donationListModel.toString());
+//                }
+//                appDataStatus.dataLoaded(objects);
 //                appDataStatus.dataLoaded("data loaded");
 //            }
             @Override
@@ -81,34 +81,34 @@ public class DonationListController {
                 donationList = (List<DonationListModel>)(List<?>)donations;
                 Log.d("DonationListController","food key is"+donationList.size());
                 DonationModel don = new DonationListModel();
-//                for (final DonationListModel donation : donationList) {
-//                    Log.d("DonationListController", "instanceof key is" + (donation instanceof DonationListModel));
-//                    //final DonationListModel d = (DonationListModel) donation;
-//                    foodKey = donation.getFoodKey();
-//                    Log.d("DonationListController", "food key is" + foodKey);
-//                    foodHandler.getFoodItem(foodKey, new DataStatus() {
-//                        @Override
-//                        public void dataLoaded(Object object) {
-//                            super.dataLoaded(object);
-//                            Log.d("DonationListController", "Got food model for food");
-//                            FoodModel foodModel = (FoodModel) object;
-//                            Log.d("DonationListController", "the food read is " + foodModel.toString());
-//                            DonationListModel donationListModel = new DonationListModel(donation.getDonorKey(), donation.getPickUpLocationKey(), donation.getFoodKey(), foodModel.getFoodItem(), foodModel.getNoOfPersons());
-//                            donation.setFoodItem(foodModel.getFoodItem());
-//                            donation.setNoOfPersons(foodModel.getNoOfPersons());
-//                            Log.d("DonationListController", "food key is" + donationListModel.getFoodItem());
-//                            Log.d("DonationListController", "food key is" + donationListModel.getNoOfPersons());
-//                            //donationsMap.put(donation.getKey(),donationListModel);
-//                            Log.d("DonationListController", "donation List item added  is" + donationListModel.toString());
-//                        }
-//
-//                        @Override
-//                        public void errorOccured(String message) {
-//                            Log.d("DonationListController", message);
-//                            appDataStatus.errorOccured(message);
-//                        }
-//                    });
-//                }
+                for (final DonationListModel donation : donationList) {
+                    Log.d("DonationListController", "instanceof key is" + (donation instanceof DonationListModel));
+                    //final DonationListModel d = (DonationListModel) donation;
+                    foodKey = donation.getFoodKey();
+                    Log.d("DonationListController", "food key is" + foodKey);
+                    foodHandler.getFoodItem(foodKey, new DataStatus() {
+                        @Override
+                        public void dataLoaded(Object object) {
+                            super.dataLoaded(object);
+                            Log.d("DonationListController", "Got food model for food");
+                            FoodModel foodModel = (FoodModel) object;
+                            Log.d("DonationListController", "the food read is " + foodModel.toString());
+                            DonationListModel donationListModel = new DonationListModel(donation.getDonorKey(), donation.getPickUpLocationKey(), donation.getFoodKey(), foodModel.getFoodItem(), foodModel.getNoOfPersons());
+                            donation.setFoodItem(foodModel.getFoodItem());
+                            donation.setNoOfPersons(foodModel.getNoOfPersons());
+                            Log.d("DonationListController", "food key is" + donationListModel.getFoodItem());
+                            Log.d("DonationListController", "food key is" + donationListModel.getNoOfPersons());
+                            //donationsMap.put(donation.getKey(),donationListModel);
+                            Log.d("DonationListController", "donation List item added  is" + donationListModel.toString());
+                        }
+
+                        @Override
+                        public void errorOccured(String message) {
+                            Log.d("DonationListController", message);
+                            appDataStatus.errorOccured(message);
+                        }
+                    });
+                }
                 appDataStatus.dataLoaded(donationList);
             }
 

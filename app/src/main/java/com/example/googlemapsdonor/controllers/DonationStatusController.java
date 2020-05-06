@@ -45,6 +45,7 @@ public class DonationStatusController {
                             @Override
                             public void errorOccured(String message) {
                                 Log.d("DonationStatusControler","donations status is "+message);
+                                appDataStatus.dataLoaded(message);
                             }
                         });
                     }
@@ -52,7 +53,8 @@ public class DonationStatusController {
 
                 @Override
                 public void errorOccured(String message) {
-
+                    Log.d("DonationStatusControler","donations status is "+message);
+                    appDataStatus.dataLoaded(message);
                 }
             });
         }

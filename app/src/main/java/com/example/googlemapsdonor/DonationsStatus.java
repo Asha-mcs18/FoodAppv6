@@ -27,7 +27,7 @@ public class DonationsStatus extends AppCompatActivity {
     public static final int REQUEST_CODE_GETMESSAGE = 1014;
     private NotificationManagerCompat notificationManager;
     private TextView donationText;
-
+    private String donationStatus= "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,22 +36,29 @@ public class DonationsStatus extends AppCompatActivity {
         notificationManager = NotificationManagerCompat.from(this);
         DonationStatusController statusController = new DonationStatusController();
         donationText= findViewById(R.id.donationKey);
-        donationText.setText("Donation Status Page ");
-//        statusController.donorStatus(new DataStatus() {
-//            @Override
-//            public void dataLoaded(String status) {
-//                super.dataLoaded(status);
-//                Log.d("DonationStatusCOntrole", "Data Snapshot is " + status);
-//                if(status!=null&&status.equals(Constants.ACCEPTED)){
-//                    sendNotification();
-//                }
-//            }
-//
-//            @Override
-//            public void errorOccured(String message) {
-//
-//            }
-//        });
+        if(donationStatus==null||donationStatus.equals("")){
+            donationText.setText("Please make a donation first");
+        }
+        statusController.donorStatus(new DataStatus() {
+            @Override
+            public void dataLoaded(String status) {
+                super.dataLoaded(status);
+                donationStatus=status;
+                if(donationStatus==null||donationStatus.equals("")){
+                    donationText.setText("Please make a donation first");
+                }
+                donationText.setText(donationStatus);
+                Log.d("DonationStatusCOntrole", "Data Snapshot is " + status);
+                if(donationStatus!=null&&donationStatus.equals(Constants.ACCEPTED)){
+                    sendNotification();
+                }
+            }
+
+            @Override
+            public void errorOccured(String message) {
+
+            }
+        });
     }
 
     public void sendNotification() {
@@ -68,11 +75,11 @@ public class DonationsStatus extends AppCompatActivity {
                 .build();
 
         notificationManager.notify(1, notification);
-        Intent intent = new Intent(getApplicationContext(),NgoActivity.class);
-        startActivity(intent);
-        DonationModel donationModel = (DonationModel) getIntent().getSerializableExtra("DonationModel");
-        donationText = findViewById(R.id.donationKey);
-        donationText.setText(donationModel.getKey());
-        Log.d("Donor Status Activity",donationModel.toString());
+//        Intent intent = new Intent(getApplicationContext(),NgoActivity.class);
+////        startActivity(intent);
+//        DonationModel donationModel = (DonationModel) getIntent().getSerializableExtra("DonationModel");
+//        donationText = findViewById(R.id.donationKey);
+//        donationText.setText(donationModel.getKey());
+//        Log.d("Donor Status Activity",donationModel.toString());
     }
 }
