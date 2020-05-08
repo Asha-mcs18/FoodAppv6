@@ -30,11 +30,10 @@ public class FBDonationHandler {
     private DatabaseReference donationRef;
     private List<DonationModel> donations;
     Calendar startDate = new GregorianCalendar();
-    Calendar endDate = new GregorianCalendar();
+    //Calendar endDate = new GregorianCalendar();
     int flag=0;
 
     //DonationModel donationModel;
-
     public FBDonationHandler(){
         firebaseDatabase = FirebaseDatabase.getInstance();
         donationRef = firebaseDatabase.getReference(Constants.DONATION);
@@ -45,11 +44,12 @@ public class FBDonationHandler {
         startDate.set(Calendar.SECOND,0);
         startDate.set(Calendar.MILLISECOND,0);
         //for end date
-        endDate.set(Calendar.HOUR_OF_DAY,11);
-        endDate.set(Calendar.MINUTE,59);
-        endDate.set(Calendar.SECOND,59);
-        endDate.set(Calendar.MILLISECOND,999);
+//        endDate.set(Calendar.HOUR_OF_DAY,11);
+//        endDate.set(Calendar.MINUTE,59);
+//        endDate.set(Calendar.SECOND,59);
+//        endDate.set(Calendar.MILLISECOND,999);
     }
+
     //done
     public void readDonations(final DataStatus dataStatus){
         donationRef.addValueEventListener(new ValueEventListener() {
@@ -84,7 +84,6 @@ public class FBDonationHandler {
             }
         });
     }
-
 
     //done
     public void newDonation(final DonationModel donationModel, final DataStatus dataStatus){
@@ -236,7 +235,7 @@ public class FBDonationHandler {
 //        endDate = startDate;
 //        endDate.add(Calendar.DAY_OF_MONTH,1);
         Log.d("Donation Hleper", "start date is " + startDate.getTimeInMillis());
-        Log.d("Donation Hleper", "end date is " + endDate.getTimeInMillis());
+        //Log.d("Donation Hleper", "end date is " + endDate.getTimeInMillis());
         donationRef.orderByChild(Constants.DONOR_KEY).equalTo(donorKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
