@@ -30,11 +30,10 @@ public class FBDonationHandler {
     private DatabaseReference donationRef;
     private List<DonationModel> donations;
     Calendar startDate = new GregorianCalendar();
-    Calendar endDate = new GregorianCalendar();
+    //Calendar endDate = new GregorianCalendar();
     int flag=0;
 
     //DonationModel donationModel;
-
     public FBDonationHandler(){
         firebaseDatabase = FirebaseDatabase.getInstance();
         donationRef = firebaseDatabase.getReference(Constants.DONATION);
@@ -45,10 +44,10 @@ public class FBDonationHandler {
         startDate.set(Calendar.SECOND,0);
         startDate.set(Calendar.MILLISECOND,0);
         //for end date
-        endDate.set(Calendar.HOUR_OF_DAY,11);
-        endDate.set(Calendar.MINUTE,59);
-        endDate.set(Calendar.SECOND,59);
-        endDate.set(Calendar.MILLISECOND,999);
+//        endDate.set(Calendar.HOUR_OF_DAY,11);
+//        endDate.set(Calendar.MINUTE,59);
+//        endDate.set(Calendar.SECOND,59);
+//        endDate.set(Calendar.MILLISECOND,999);
     }
 
     //done
@@ -57,6 +56,7 @@ public class FBDonationHandler {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 donations.clear();
+                Log.d("read donations", "donation key" +dataSnapshot.toString());
                 List<String> keys = new ArrayList<>();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     if(ds!=null){
@@ -91,13 +91,9 @@ public class FBDonationHandler {
         String pickUpLocationKey = donationModel.getPickUpLocationKey();
         String foodKey= donationModel.getFoodKey();
         if(donorKey!=null&&pickUpLocationKey!=null&&foodKey!=null){
-            final String key = donationRef.push().getKey();
-            donationModel.setKey(key);
-            donationModel.setStatus(Constants.NOT_ACCEPTED_YET);
-            donationModel.setTimestampCreated(ServerValue.TIMESTAMP);
             //if this is the first donation made by donor
             Log.d("DBDonHand new","new  start time :"+startDate.getTimeInMillis());
-            Log.d("DBDonHand new","new end time :"+endDate.getTimeInMillis());
+            //Log.d("DBDonHand new","new end time :"+endDate.getTimeInMillis());
             donationRef.orderByChild(Constants.DONOR_KEY).equalTo(donorKey).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -106,12 +102,16 @@ public class FBDonationHandler {
                     for(DataSnapshot ds : dataSnapshot.getChildren()){
                         DonationModel dm= ds.getValue(DonationModel.class);
                         if(dm!=null
-                                &&  Long.parseLong(dm.getTimestampCreated().toString())>startDate.getTimeInMillis()){
+                                &&  Long.parseLong(dm.getTimestampCreated().toString())>=startDate.getTimeInMillis()){
                             Log.d("New Donation","new inside if condition hence donation already exist");
                             flag=1;
                         }
                     }
                     if(flag==0){
+                        final String key = donationRef.push().getKey();
+                        donationModel.setKey(key);
+                        donationModel.setStatus(Constants.NOT_ACCEPTED_YET);
+                        donationModel.setTimestampCreated(ServerValue.TIMESTAMP);
                         donationRef.child(key).setValue(donationModel)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -137,7 +137,8 @@ public class FBDonationHandler {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    Log.d("New Donation","new error "+databaseError.getMessage());
+                    dataStatus.errorOccured(databaseError.getMessage());
                 }
             });
         }
@@ -234,14 +235,16 @@ public class FBDonationHandler {
 //        endDate = startDate;
 //        endDate.add(Calendar.DAY_OF_MONTH,1);
         Log.d("Donation Hleper", "start date is " + startDate.getTimeInMillis());
-        Log.d("Donation Hleper", "end date is " + endDate.getTimeInMillis());
-        donationRef.orderByChild("timestampCreated").startAt(startDate.getTimeInMillis()).endAt(endDate.getTimeInMillis()).addValueEventListener(new ValueEventListener() {
+        //Log.d("Donation Hleper", "end date is " + endDate.getTimeInMillis());
+        donationRef.orderByChild(Constants.DONOR_KEY).equalTo(donorKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DonationModel donationModel=null;
                 Log.d("Donation Hleper","Data Snapshot is "+dataSnapshot.toString());
                 for(DataSnapshot ds:dataSnapshot.getChildren()){
-                    if((ds.getValue(DonationModel.class)).getDonorKey().equals(donorKey)) {
+                    DonationModel dm= ds.getValue(DonationModel.class);
+                    if(dm!=null
+                            &&  Long.parseLong(dm.getTimestampCreated().toString())>=startDate.getTimeInMillis()){
                         donationModel = ds.getValue(DonationModel.class);
                     }
                 }
