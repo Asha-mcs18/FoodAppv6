@@ -26,9 +26,14 @@ public class DonationsStatus extends AppCompatActivity {
 
     public static final int REQUEST_CODE_GETMESSAGE = 1014;
     private NotificationManagerCompat notificationManager;
-    private TextView donationText;
-
+    private TextView mstatus;
     private String donationStatus= "";
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mstatus = findViewById(R.id.mstatus);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +42,10 @@ public class DonationsStatus extends AppCompatActivity {
         Log.i("Donation Status","status");
         notificationManager = NotificationManagerCompat.from(this);
         DonationStatusController statusController = new DonationStatusController();
-
-        donationText= findViewById(R.id.donationKey);
+        //
         if(donationStatus==null||donationStatus.equals("")){
-            donationText.setText("Please make a donation first");
+            mstatus= findViewById(R.id.mstatus);
+            mstatus.setText("Please make a donation first");
         }
         statusController.donorStatus(new DataStatus() {
             @Override
@@ -48,9 +53,9 @@ public class DonationsStatus extends AppCompatActivity {
                 super.dataLoaded(status);
                 donationStatus=status;
                 if(donationStatus==null||donationStatus.equals("")){
-                    donationText.setText("Please make a donation first");
+                   mstatus.setText("Please make a donation first");
                 }
-                donationText.setText(donationStatus);
+                mstatus.setText(donationStatus);
                 Log.d("DonationStatusCOntrole", "Data Snapshot is " + status);
                 if(donationStatus!=null&&donationStatus.equals(Constants.ACCEPTED)){
                     sendNotification();
@@ -62,11 +67,9 @@ public class DonationsStatus extends AppCompatActivity {
 
             }
         });
-
-   
     }
 
-    public void sendNotification(View view) {
+    public void sendNotification() {
         String title = "Give this OTP to NGO";
         String message = "Your OTP is 1234";
         Log.i("onsend","onsend");
@@ -78,9 +81,6 @@ public class DonationsStatus extends AppCompatActivity {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .build();
-
         notificationManager.notify(1, notification);
-
     }
-
 }

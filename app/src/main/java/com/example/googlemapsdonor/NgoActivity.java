@@ -38,12 +38,12 @@ public class NgoActivity extends AppCompatActivity {
             @Override
             public void dataLoaded(List<?> donations) {
                 super.dataLoaded(donations);
-                Log.d("NGO ACTIVITY", "Donation List Item after food added");
+                Log.d("NGO ACTIVITY", "ngo activity Donation List Item after food added");
                 List<DonationListModel> donationList = (List<DonationListModel>)(List<?>) donations;
                 mdonationList = donationList;
-//                for(DonationListModel d: donationList){
-//                    Log.d("NGO ACTIVITY", "donation List item added  is" +d.toString());
-//                }
+                for(DonationListModel d: donationList){
+                    Log.d("NGO ACTIVITY", "ngo activity donation List item added  is" +d.toString());
+                }
             }
 
             @Override

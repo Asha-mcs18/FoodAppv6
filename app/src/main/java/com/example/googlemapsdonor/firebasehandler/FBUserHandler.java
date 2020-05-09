@@ -176,6 +176,21 @@ public class FBUserHandler {
         });*/
     }
 
+    public void readUserRoleByKey(final String key, final DataStatus dataStatus){
+        roleRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String user =  dataSnapshot.getValue(String.class);
+                dataStatus.dataLoaded(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void updateUser(final UserModel updatedUser){
         fullPath =userRef.child(updatedUser.getRole());
         fullPath.orderByKey().equalTo(updatedUser.getUserKey()).addListenerForSingleValueEvent(new ValueEventListener() {

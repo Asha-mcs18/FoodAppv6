@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.example.googlemapsdonor.models.DataStatus;
 import com.example.googlemapsdonor.models.DonationListModel;
 import com.example.googlemapsdonor.models.DonationModel;
+import com.example.googlemapsdonor.models.FoodModel;
 import com.example.googlemapsdonor.utils.Constants;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,6 +33,7 @@ public class FBDonationHandler {
     Calendar startDate = new GregorianCalendar();
     //Calendar endDate = new GregorianCalendar();
     int flag=0;
+    private long i=0, size=0;
 
     //DonationModel donationModel;
     public FBDonationHandler(){
@@ -52,30 +54,52 @@ public class FBDonationHandler {
 
     //done
     public void readDonations(final DataStatus dataStatus){
-        donationRef.addValueEventListener(new ValueEventListener() {
+        donationRef.orderByChild("status").equalTo(Constants.NOT_ACCEPTED_YET).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                i=0;
+                size=0;
                 donations.clear();
                 Log.d("read donations", "donation key" +dataSnapshot.toString());
                 List<String> keys = new ArrayList<>();
+                size=dataSnapshot.getChildrenCount();
+                Log.d("Donation Handler","size is "+size);
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     if(ds!=null){
                         String key = ds.getKey();
-                        DonationModel donationModel= ds.getValue(DonationListModel.class);
+                        final DonationListModel donationModel= ds.getValue(DonationListModel.class);
                         keys.add(key);
                         //donations.add(donationModel);
-                        if(donationModel.getStatus()!=null&&donationModel.getStatus().equals(Constants.NOT_ACCEPTED_YET)) {
-                            donations.add(donationModel);
-                            Log.d("read donations", "donation key" + donationModel.getKey());
-                            Log.d("read donations", "donation status" + donationModel.getStatus());
+                            String foodKey = donationModel.getFoodKey();
+                            firebaseDatabase.getReference("Food").child(foodKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    FoodModel food = dataSnapshot.getValue(FoodModel.class);
+                                    donationModel.setFoodItem(food.getFoodItem());
+                                    donationModel.setNoOfPersons(food.getNoOfPersons());
+                                    donations.add(donationModel);
+                                    Log.d("Donation handler","final donation  objet is "+donationModel.toString());
+                                    if(++i==size){
+                                        dataStatus.dataLoaded(donations);
+                                        Log.d("read donations", "Outside donation handler for " + donations.size());
+                                    }
+                                    Log.d("read donations", "Value of i and size " + i+" "+size);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+//                            Log.d("read donations", "donation key" + donationModel.getKey());
+//                            Log.d("read donations", "donation status" + donationModel.getStatus());
                         }
-                    }
+
                 }
-                Log.d("read donations", "Outside donation handler for" + donations.size());
 //                for (DonationModel dm:donations) {
 //                    Log.d("For each loop",dm.getDonorKey());
 //                }
-                dataStatus.dataLoaded(donations);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

@@ -26,6 +26,7 @@ public class FBUserAuthHandler {
         FirebaseUser currentUser = firebaeAuth.getCurrentUser();
         if(currentUser!=null){
             //redirect to main page based on the user role
+
         }
         else{
             //redirect to register page

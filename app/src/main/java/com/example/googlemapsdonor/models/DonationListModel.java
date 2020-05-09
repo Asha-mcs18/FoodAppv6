@@ -34,7 +34,17 @@ public class DonationListModel extends DonationModel {
 
     @Override
     public String toString() {
-        return "DonationListModel{" +
+        return "DonationModel{" +
+                "key='" + getKey() + '\'' +
+                ", ngoKey='" + getNgoKey() + '\'' +
+                ", donorKey='" + getDonorKey() + '\'' +
+                ", pickUpLocationKey='" + getPickUpLocationKey() + '\'' +
+                ", ngoLocationKey='" + getNgoLocationKey() + '\'' +
+                ", donorLocationKey='" + getDonorLocationKey() + '\'' +
+                ", foodKey='" + getFoodKey() + '\'' +
+                ", status='" + getStatus() + '\'' +
+                '}'+
+                "DonationListModel{" +
                 "foodItem='" + foodItem + '\'' +
                 ", noOfPersons=" + noOfPersons +
                 '}';
