@@ -28,29 +28,29 @@ public class LoginActivity extends AppCompatActivity {
         Log.i("email",email.getText().toString());
         Log.i("password",password.getText().toString());
 
-        //userModel.setPassword(password.getText().toString());
-        fbUserHandler.readUser(email.getText().toString(),password.getText().toString(),new DataStatus(){
-            @Override
-            public void dataLoaded(Object object) {
-                super.dataLoaded(object);
-                UserModel user = (UserModel) object;
-                Toast.makeText(LoginActivity.this,"Welcome "+user.getUserName(),Toast.LENGTH_LONG).show();
-                //intent to rediret to new activity based on role
-                if (user.getRole().equals(Constants.DONOR)){
-                    Intent intent = new Intent(getApplicationContext(),DonorProfile.class);
-                    startActivity(intent);
-                }
-                else if (user.getRole().equals(Constants.NGO)){
-                    Intent intent = new Intent(getApplicationContext(),NgoActivity.class);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void errorOccured(String message) {
-                Toast.makeText(LoginActivity.this,"Login Failed! "+message,Toast.LENGTH_LONG).show();
-            }
-        });
+//        //userModel.setPassword(password.getText().toString());
+//        fbUserHandler.readUser(email.getText().toString(),password.getText().toString(),new DataStatus(){
+//            @Override
+//            public void dataLoaded(Object object) {
+//                super.dataLoaded(object);
+//                UserModel user = (UserModel) object;
+//                Toast.makeText(LoginActivity.this,"Welcome "+user.getUserName(),Toast.LENGTH_LONG).show();
+//                //intent to rediret to new activity based on role
+//                if (user.getRole().equals(Constants.DONOR)){
+//                    Intent intent = new Intent(getApplicationContext(),DonorProfile.class);
+//                    startActivity(intent);
+//                }
+//                else if (user.getRole().equals(Constants.NGO)){
+//                    Intent intent = new Intent(getApplicationContext(),NgoActivity.class);
+//                    startActivity(intent);
+//                }
+//            }
+//
+//            @Override
+//            public void errorOccured(String message) {
+//                Toast.makeText(LoginActivity.this,"Login Failed! "+message,Toast.LENGTH_LONG).show();
+//            }
+//        });
         //action to be taken after user login
         String muserName = email.getText().toString();
         String mpassword  =password.getText().toString();
